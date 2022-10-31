@@ -1,0 +1,31 @@
+USE ischool;
+CREATE or REPLACE VIEW student_view AS
+	SELECT job_id AS 'Job ID', job_title AS 'Job Title', company_name AS 'Company Name', position_type AS 'position', newsletter_date AS'Date'
+    FROM newsletter
+    group by company_name;
+    
+    
+    CREATE or REPLACE VIEW advisor_view AS
+		SELECT student_id AS 'Studnet id', first_name AS 'Student First Name',last_name AS 'Student Last Name', job_title AS 'Job Title', employer
+        From students
+			JOIN job_title_info
+				WHERE job_title = 'Business Analytics Intern';
+            
+	CREATE or REPLACE VIEW jobs_view AS
+		SELECT COUNT(company.company_name) AS 'Company', sector, program, size AS 'Company Size', type AS 'Company Type'
+        FROM students
+			JOIN company
+				JOIN newsletter
+					GROUP BY company.company_name;
+            
+	CREATE or REPLACE VIEW appointment AS
+		SELECT advicing_id AS 'Advicing ID', advisor_id AS 'Advisor id', format AS 'Format', service_description AS 'Required service'
+        FROM drop_in_advising
+        JOIN career_services USING(service_id)
+        WHERE service_id = 3;
+	
+    
+    CREATE or REPLACE VIEW student_information AS
+		SELECT student_id AS 'Student id', grad_year AS 'graduation year', status AS 'Status', job_title AS 'Job interest'
+        FROM students JOIN newsletter
+			WHERE student_id IN (SELECT student_id from newsletter_has_students);
